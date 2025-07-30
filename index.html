@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistics Class - Practical 3</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header Styles */
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 30px 0;
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.9;
+        }
+        
+        /* Main Content Card */
+        .main-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+            min-height: 500px;
+        }
+        
+        /* Welcome Page */
+        .welcome-section {
+            padding: 50px;
+            text-align: center;
+        }
+        
+        .welcome-section h2 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        
+        .welcome-message {
+            color: #666;
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .prac-card {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(5, 150, 105, 0.05) 100%);
+            border: 2px solid rgba(16, 185, 129, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px auto;
+            max-width: 600px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .prac-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(16, 185, 129, 0.2);
+            border-color: #10b981;
+        }
+        
+        .prac-card h3 {
+            color: #059669;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+        
+        .prac-card p {
+            color: #374151;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        
+        /* Page Content Sections */
+        .page-content {
+            display: none;
+            padding: 40px;
+        }
+        
+        .page-content.active {
+            display: block;
+        }
+        
+        /* Back Button */
+        .back-btn {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(107, 114, 128, 0.3);
+        }
+        
+        /* Worksheet Download Section */
+        .worksheet-section {
+            text-align: center;
+        }
+        
+        .worksheet-section h2 {
+            color: #333;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+        }
+        
+        .worksheet-info {
+            background: rgba(59, 130, 246, 0.05);
+            border-left: 4px solid #3b82f6;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 10px 10px 0;
+            text-align: left;
+        }
+        
+        .worksheet-info h4 {
+            color: #1e40af;
+            margin-bottom: 10px;
+        }
+        
+        .code-input-section {
+            background: rgba(249, 250, 251, 0.8);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+            text-align: left;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+        
+        .download-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            width: 100%;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+        
+        /* Quiz Section */
+        .quiz-section h2 {
+            color: #333;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .quiz-intro {
+            background: rgba(249, 115, 22, 0.05);
+            border-left: 4px solid #f97316;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .quiz-intro h4 {
+            color: #ea580c;
+            margin-bottom: 10px;
+        }
+        
+        .quiz-form {
+            background: rgba(249, 250, 251, 0.8);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .question {
+            margin-bottom: 25px;
+        }
+        
+        .question h4 {
+            margin-bottom: 10px;
+            color: #374151;
+        }
+        
+        .quiz-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            width: 100%;
+        }
+        
+        .quiz-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        /* Dr. Levin AI Section */
+        .dr-levin-section {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(5, 150, 105, 0.05) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            display: none;
+        }
+        
+        .dr-levin-section.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .ai-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+        }
+        
+        .ai-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-right: 15px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            animation: pulse 3s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
+            50% { box-shadow: 0 4px 12px rgba(16, 185, 129, 0.5), 0 0 20px rgba(16, 185, 129, 0.2); }
+        }
+        
+        .ai-info h3 {
+            color: #059669;
+            margin: 0 0 5px 0;
+            font-size: 1.4em;
+        }
+        
+        .ai-info p {
+            color: #6b7280;
+            margin: 0;
+            font-style: italic;
+        }
+        
+        .struggle-form h4 {
+            color: #374151;
+            margin-bottom: 10px;
+        }
+        
+        .struggle-form textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 100px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .struggle-form textarea:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+        
+        .ai-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            margin: 10px 5px;
+        }
+        
+        .ai-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+        
+        .ai-btn.secondary {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+        }
+        
+        .ai-response {
+            background: white;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            display: none;
+        }
+        
+        .ai-response.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+        
+        .response-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #059669;
+            font-weight: 600;
+        }
+        
+        .ai-avatar-small {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        
+        .response-content {
+            color: #374151;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .response-content h4 {
+            color: #059669;
+            margin-bottom: 15px;
+        }
+        
+        .response-content h5 {
+            color: #059669;
+            margin: 15px 0 8px 0;
+        }
+        
+        .response-content .example-box {
+            background: rgba(59, 130, 246, 0.05);
+            border-left: 4px solid #3b82f6;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .response-content .formula {
+            background: rgba(16, 185, 129, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 10px;
+            border-radius: 8px;
+            font-family: monospace;
+            text-align: center;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            color: #6b7280;
+            font-style: italic;
+            padding: 20px;
+        }
+        
+        .typing-dots {
+            display: inline-block;
+            margin-left: 10px;
+        }
+        
+        .typing-dots span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+            margin: 0 2px;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+        
+        /* Cheat Sheet Download */
+        .cheatsheet-section {
+            background: rgba(34, 197, 94, 0.05);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .cheatsheet-section.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+        
+        .cheatsheet-section h3 {
+            color: #059669;
+            margin-bottom: 15px;
+        }
+        
+        /* Success/Error Messages */
+        .message {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+            font-weight: 500;
+        }
+        
+        .success {
+            background: rgba(34, 197, 94, 0.1);
+            color: #059669;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+        
+        .error {
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2.2em;
+            }
+            
+            .welcome-section, .page-content {
+                padding: 25px;
+            }
+            
+            .ai-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .ai-avatar {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📊 Statistics Class</h1>
+            <p>Practical 3: Data Analysis & Statistical Functions</p>
+        </div>
+        
+        <!-- Main Card -->
+        <div class="main-card">
+            <!-- Welcome Page -->
+            <div id="welcomePage" class="welcome-section">
+                <h2>Welcome to Practical 3! 🎯</h2>
+                <div class="welcome-message">
+                    <p>Today we'll be exploring advanced statistical concepts and data analysis techniques. You have two options to enhance your learning experience:</p>
+                    <br>
+                    <p><strong>Work with me in class</strong> using our interactive worksheet, or <strong>test your knowledge</strong> with our quiz and get personalized help from Dr. Levin, your AI teaching assistant.</p>
+                </div>
+                
+                <!-- Option 1: In-Class Worksheet -->
+                <div class="prac-card" onclick="showWorksheet()">
+                    <h3>📝 Option 1: In-Class Worksheet</h3>
+                    <p>Download the worksheet file using your unique code. We'll work through the problems together during class time, exploring statistical functions and data analysis techniques step by step.</p>
+                </div>
+                
+                <!-- Option 2: Quiz & AI Assistant -->
+                <div class="prac-card" onclick="showQuiz()">
+                    <h3>🧠 Option 2: Quiz & AI Assistant</h3>
+                    <p>Test your knowledge with our interactive quiz, then get personalized explanations from Dr. Levin for any concepts you're struggling with. Complete the experience by downloading your cheat sheet!</p>
+                </div>
+            </div>
+            
+            <!-- Worksheet Download Page -->
+            <div id="worksheetPage" class="page-content">
+                <button class="back-btn" onclick="goHome()">
+                    ← Back to Options
+                </button>
+                
+                <div class="worksheet-section">
+                    <h2>📝 In-Class Worksheet Download</h2>
+                    
+                    <div class="worksheet-info">
+                        <h4>📋 What you'll get:</h4>
+                        <p>• Statistical function practice problems<br>
+                        • Real temperature data for analysis<br>
+                        • Step-by-step calculation exercises<br>
+                        • Variance, standard deviation, and distribution problems</p>
+                    </div>
+                    
+                    <div class="code-input-section">
+                        <div class="form-group">
+                            <label for="worksheetCode">Enter your worksheet code:</label>
+                            <input type="text" id="worksheetCode" placeholder="e.g., GGR2" autocomplete="off">
+                        </div>
+                        
+                        <button class="download-btn" onclick="downloadWorksheet()">
+                            📥 Download Worksheet
+                        </button>
+                        
+                        <div id="worksheetMessage" class="message"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quiz Page -->
+            <div id="quizPage" class="page-content">
+                <button class="back-btn" onclick="goHome()">
+                    ← Back to Options
+                </button>
+                
+                <div class="quiz-section">
+                    <h2>🧠 Statistical Functions Quiz</h2>
+                    
+                    <div class="quiz-intro">
+                        <h4>📝 Quiz Instructions:</h4>
+                        <p>Answer the three questions below about Excel statistical functions. After completing the quiz, you'll have the opportunity to ask Dr. Levin about any concepts you're struggling with, followed by access to download your personalized cheat sheet.</p>
+                    </div>
+                    
+                    <div class="quiz-form">
+                        <div class="form-group">
+                            <label for="studentNumber">Student Number:</label>
+                            <input type="text" id="studentNumber" placeholder="e.g., 2024001234" required>
+                        </div>
+                        
+                        <div class="question">
+                            <h4>1. What Excel function calculates standard deviation for a sample?</h4>
+                            <input type="text" id="q1" placeholder="Enter function name (e.g., STDEV.S)">
+                        </div>
+                        
+                        <div class="question">
+                            <h4>2. What Excel function calculates population variance?</h4>
+                            <input type="text" id="q2" placeholder="Enter function name">
+                        </div>
+                        
+                        <div class="question">
+                            <h4>3. What Excel function calculates the arithmetic mean?</h4>
+                            <input type="text" id="q3" placeholder="Enter function name">
+                        </div>
+                        
+                        <button class="quiz-btn" onclick="submitQuiz()">Submit Quiz & Continue</button>
+                        
+                        <div id="quizMessage" class="message"></div>
+                    </div>
+                </div>
+                
+                <!-- Dr. Levin AI Section -->
+                <div id="drLevinSection" class="dr-levin-section">
+                    <div class="ai-header">
+                        <div class="ai-avatar">👨‍🏫</div>
+                        <div class="ai-info">
+                            <h3>Ask Dr. Levin</h3>
+                            <p>Your Personal AI Teaching Assistant</p>
+                        </div>
+                    </div>
+                    
+                    <div class="struggle-form">
+                        <h4>🤔 What statistical concept are you struggling with?</h4>
+                        <p style="color: #666; margin-bottom: 20px;">Type your question and Dr. Levin will create a personalized explanation just for you!</p>
+                        
+                        <div class="form-group">
+                            <textarea id="struggle" placeholder="Example: 'I don't understand when to use VAR vs VAR.P' or 'How do I know if my data is normally distributed?'" rows="3"></textarea>
+                        </div>
+                        
+                        <button class="ai-btn" onclick="askDrLevin()">🤖 Ask Dr. Levin</button>
+                    </div>
+                    
+                    <div id="drLevinResponse" class="ai-response">
+                        <!-- AI response will be populated here -->
+                    </div>
+                </div>
+                
+                <!-- Cheat Sheet Download Section -->
+                <div id="cheatsheetSection" class="cheatsheet-section">
+                    <h3>🎉 Congratulations! Quiz Complete</h3>
+                    <p>You've successfully completed the quiz and worked with Dr. Levin. Download your personalized cheat sheet below:</p>
+                    <br>
+                    <button class="download-btn" onclick="downloadCheatSheet()">📄 Download Your Cheat Sheet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // File database for worksheet downloads
+        const worksheetDatabase = {
+            'GGR2': {
+                name: 'Prac3_Temperature_Analysis_Worksheet.csv',
+                data: [
+                    ['TEMPERATURE DATA ANALYSIS - PRACTICAL 3', '', '', '', ''],
+                    ['Month', 'Temperature (°C)', 'Rainfall (mm)', 'Humidity (%)', 'Notes'],
+                    ['January', '28.5', '95', '78', 'Summer peak'],
+                    ['February', '27.8', '88', '76', 'Late summer'],
+                    ['March', '25.2', '72', '71', 'Autumn start'],
+                    ['April', '22.1', '45', '65', 'Mid autumn'],
+                    ['May', '18.7', '25', '58', 'Late autumn'],
+                    ['June', '15.3', '15', '52', 'Winter start'],
+                    ['July', '14.8', '12', '48', 'Winter peak'],
+                    ['August', '16.2', '18', '51', 'Late winter'],
+                    ['September', '19.5', '35', '58', 'Spring start'],
+                    ['October', '23.1', '55', '64', 'Mid spring'],
+                    ['November', '25.8', '75', '70', 'Late spring'],
+                    ['December', '27.9', '92', '75', 'Summer start'],
+                    ['', '', '', '', ''],
+                    ['TASKS:', '', '', '', ''],
+                    ['1. Calculate mean temperature using AVERAGE()', '', '', '', ''],
+                    ['2. Calculate population variance using VAR.P()', '', '', '', ''],
+                    ['3. Calculate sample standard deviation using STDEV.S()', '', '', '', ''],
+                    ['4. Find the median using MEDIAN()', '', '', '', ''],
+                    ['5. Determine the correlation between temp and humidity', '', '', '', '']
+                ]
+            }
+        };
+        
+        // Quiz correct answers
+        const correctAnswers = ['STDEV.S', 'VAR.P', 'AVERAGE'];
+        
+        // Dr. Levin responses
+        const drLevinResponses = {
+            'var': {
+                title: "VAR vs VAR.P - Population vs Sample Variance",
+                content: `
+                    <h5>🎯 The Key Difference:</h5>
+                    <p><strong>VAR.P</strong> = Use when you have <strong>ALL</strong> the data (entire population)<br>
+                    <strong>VAR</strong> = Use when you have a <strong>SAMPLE</strong> from a larger group</p>
+                    
+                    <div class="example-box">
+                        <strong>Example with our temperature data:</strong><br>
+                        🌡️ <strong>Use VAR.P:</strong> Temperature readings for all 12 months of the year<br>
+                        🌡️ <strong>Use VAR:</strong> Temperature readings for 6 random months representing the whole year
+                    </div>
+                    
+                    <h5>📊 The Formula Difference:</h5>
+                    <div class="formula">VAR.P divides by n<br>VAR divides by (n-1)</div>
+                    
+                    <p>For our 12-month temperature data, VAR.P divides by 12, while VAR would divide by 11!</p>
+                `
+            },
+            'stdev': {
+                title: "Understanding Standard Deviation",
+                content: `
+                    <h5>🌡️ Standard Deviation with Temperature Data</h5>
+                    <p>Standard deviation shows how much temperatures vary from the average. Perfect for analyzing seasonal variation!</p>
+                    
+                    <div class="example-box">
+                        <strong>Temperature Analysis:</strong><br>
+                        📈 <strong>High SD:</strong> Big temperature swings (hot summers, cold winters)<br>
+                        📉 <strong>Low SD:</strong> Stable temperatures year-round (tropical climates)
+                    </div>
+                    
+                    <h5>🧮 Excel Functions:</h5>
+                    <div class="formula">STDEV.S() - for temperature samples<br>STDEV.P() - for complete year data</div>
+                    
+                    <p>In our worksheet, we use STDEV.S() because we're treating our 12 months as a sample of possible temperature patterns!</p>
+                `
+            },
+            'default': {
+                title: "Great Question! Let me help with statistics...",
+                content: `
+                    <h5>📊 Essential Statistical Functions</h5>
+                    <p>Statistics help us understand patterns in data like our temperature measurements!</p>
+                    
+                    <div class="example-box">
+                        <strong>Key Excel Functions:</strong><br>
+                        🌡️ AVERAGE() - mean temperature<br>
+                        📊 STDEV.S() - temperature variation (sample)<br>
+                        📈 VAR.P() - temperature variance (population)<br>
+                        🎯 MEDIAN() - middle temperature value
+                    </div>
+                    
+                    <h5>💡 Study Tips:</h5>
+                    <p>• Think about what your data represents<br>
+                    • Ask: "Sample or complete population?"<br>
+                    • Use real examples like weather data<br>
+                    • Practice with the worksheet problems!</p>
+                `
+            }
+        };
+        
+        // Navigation functions
+        function showWorksheet() {
+            document.getElementById('welcomePage').style.display = 'none';
+            document.getElementById('worksheetPage').style.display = 'block';
+        }
+        
+        function showQuiz() {
+            document.getElementById('welcomePage').style.display = 'none';
+            document.getElementById('quizPage').style.display = 'block';
+        }
+        
+        function goHome() {
+            document.getElementById('worksheetPage').style.display = 'none';
+            document.getElementById('quizPage').style.display = 'none';
+            document.getElementById('welcomePage').style.display = 'block';
+            
+            // Reset quiz form
+            document.getElementById('studentNumber').value = '';
+            document.getElementById('q1').value = '';
+            document.getElementById('q2').value = '';
+            document.getElementById('q3').value = '';
+            document.getElementById('drLevinSection').classList.remove('show');
+            document.getElementById('cheatsheetSection').classList.remove('show');
+        }
+        
+        // Worksheet download function
+        function downloadWorksheet() {
+            const code = document.getElementById('worksheetCode').value.trim().toUpperCase();
+            const messageDiv = document.getElementById('worksheetMessage');
+            
+            if (!code) {
+                showMessage('worksheetMessage', 'Please enter a worksheet code.', 'error');
+                return;
+            }
+            
+            if (worksheetDatabase[code]) {
+                const file = worksheetDatabase[code];
+                const csvContent = createCSVContent(file.data);
+                
+                // Create and download file
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = file.name;
+                link.click();
+                window.URL.revokeObjectURL(url);
+                
+                showMessage('worksheetMessage', `✅ Downloaded: ${file.name}`, 'success');
+                document.getElementById('worksheetCode').value = '';
+            } else {
+                showMessage('worksheetMessage', '❌ Invalid code. Please check the code provided in class.', 'error');
+            }
+        }
+        
+        // Quiz submission
+        function submitQuiz() {
+            const studentNumber = document.getElementById('studentNumber').value.trim();
+            const q1 = document.getElementById('q1').value.trim().toUpperCase();
+            const q2 = document.getElementById('q2').value.trim().toUpperCase();
+            const q3 = document.getElementById('q3').value.trim().toUpperCase();
+            
+            if (!studentNumber || !q1 || !q2 || !q3) {
+                showMessage('quizMessage', 'Please fill in all fields before submitting.', 'error');
+                return;
+            }
+            
+            // Check answers
+            const answers = [q1, q2, q3];
+            let score = 0;
+            answers.forEach((answer, index) => {
+                if (answer === correctAnswers[index]) {
+                    score++;
+                }
+            });
+            
+            showMessage('quizMessage', `✅ Quiz submitted! Score: ${score}/3 (${Math.round(score/3*100)}%)`, 'success');
+            
+            // Show Dr. Levin section
+            setTimeout(() => {
+                document.getElementById('drLevinSection').classList.add('show');
+            }, 1000);
+        }
+        
+        // Dr. Levin interaction
+        function askDrLevin() {
+            const question = document.getElementById('struggle').value.trim().toLowerCase();
+            
+            if (!question) {
+                alert('Please enter a question for Dr. Levin!');
+                return;
+            }
+            
+            const responseDiv = document.getElementById('drLevinResponse');
+            responseDiv.classList.add('show');
+            responseDiv.innerHTML = `
+                <div class="typing-indicator">
+                    <div class="ai-avatar-small">👨‍🏫</div>
+                    <span>Dr. Levin is thinking</span>
+                    <div class="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            `;
+            
+            setTimeout(() => {
+                let response = drLevinResponses['default'];
+                
+                if (question.includes('var') && (question.includes('varp') || question.includes('var.p'))) {
+                    response = drLevinResponses['var'];
+                } else if (question.includes('standard deviation') || question.includes('stdev')) {
+                    response = drLevinResponses['stdev'];
+                }
+                
+                responseDiv.innerHTML = `
+                    <div class="response-header">
+                        <div class="ai-avatar-small">👨‍🏫</div>
+                        <strong>Dr. Levin responds:</strong>
+                    </div>
+                    <div class="response-content">
+                        <h4>${response.title}</h4>
+                        ${response.content}
+                    </div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="ai-btn secondary" onclick="askFollowUp()">💭 Ask Another Question</button>
+                        <button class="ai-btn" onclick="proceedToCheatSheet()">✅ Get My Cheat Sheet</button>
+                    </div>
+                `;
+            }, 2500);
+        }
+        
+        function askFollowUp() {
+            document.getElementById('struggle').value = '';
+            document.getElementById('drLevinResponse').classList.remove('show');
+        }
+        
+        function proceedToCheatSheet() {
+            document.getElementById('cheatsheetSection').classList.add('show');
+        }
+        
+        // Cheat sheet download
+        function downloadCheatSheet() {
+            // This will be replaced when you upload your PDF
+            const cheatSheetContent = `STATISTICS CHEAT SHEET - PRACTICAL 3
+
+Excel Statistical Functions:
+• AVERAGE() - Calculate arithmetic mean
+• STDEV.S() - Sample standard deviation  
+• STDEV.P() - Population standard deviation
+• VAR.S() - Sample variance
+• VAR.P() - Population variance
+• MEDIAN() - Middle value
+• MODE() - Most frequent value
+
+Quick Reference:
+- Use .P functions for complete populations
+- Use .S functions for samples
+- Standard deviation = √variance
+- Check data normality before analysis
+
+Temperature Analysis Tips:
+- Look for seasonal patterns
+- Calculate variation to understand climate
+- Use correlation to find relationships`;
+            
+            const blob = new Blob([cheatSheetContent], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'Prac3_Statistics_CheatSheet.txt';
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        // Helper functions
+        function createCSVContent(data) {
+            return data.map(row => 
+                row.map(cell => {
+                    const cellStr = String(cell);
+                    if (cellStr.includes(',') || cellStr.includes('"') || cellStr.includes('\n')) {
+                        return '"' + cellStr.replace(/"/g, '""') + '"';
+                    }
+                    return cellStr;
+                }).join(',')
+            ).join('\n');
+        }
+        
+        function showMessage(elementId, text, type) {
+            const messageDiv = document.getElementById(elementId);
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+            messageDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
